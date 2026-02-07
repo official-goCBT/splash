@@ -1,102 +1,61 @@
 :root {
     --primary: #00d4ff;
-    --bg: #0f172a;
-    --glass: rgba(255, 255, 255, 0.05);
+    --danger: #ff4d4d;
+    --glass: rgba(255, 255, 255, 0.1);
 }
 
 body {
-    margin: 0; font-family: 'Inter', sans-serif;
-    background: var(--bg); color: #fff;
-    display: flex; justify-content: center; align-items: center; min-height: 100vh;
-}
-
-.auth-card {
-    background: var(--glass); backdrop-filter: blur(12px);
-    padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-    width: 100%; max-width: 400px; text-align: center;
-}
-
-.role-toggle {
-    display: flex; background: rgba(0,0,0,0.4); border-radius: 30px;
-    margin: 25px 0; padding: 4px; position: relative;
-}
-
-.role-toggle label {
-    flex: 1; padding: 12px; cursor: pointer; z-index: 2;
-    font-size: 0.9rem; transition: 0.4s;
-}
-
-.role-toggle input:checked + label { color: #000; font-weight: 600; }
-
-.toggle-slider {
-    position: absolute; width: calc(50% - 4px); height: calc(100% - 8px);
-    background: var(--primary); border-radius: 25px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#facTab:checked ~ .toggle-slider { transform: translateX(100%); }
-
-.auth-footer { margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-.link-btn { color: var(--primary); text-decoration: none; font-weight: 500; }
-.hidden { display: none; }
-
-/* Dashboard table styling omitted for brevity, same as previous step */
-#splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #1e293b; /* Matches your portal navy */
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Higher than everything else */
-    transition: opacity 0.5s ease, visibility 0.5s;
+    min-height: 100vh;
 }
 
-.splash-content {
+.auth-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(255,255,255,0.1);
     text-align: center;
+}
+
+.logo { font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 1rem; }
+.input-group { text-align: left; margin-bottom: 1.5rem; }
+.input-group label { display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: #aaa; }
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid #444;
+    border-radius: 5px;
     color: white;
+    box-sizing: border-box;
 }
 
-.splash-logo {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #3b82f6;
-    margin-bottom: 20px;
-    letter-spacing: -1px;
-    animation: pulse 1.5s infinite;
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.loader-bar {
-    width: 200px;
-    height: 4px;
-    background: #334155;
-    border-radius: 10px;
-    margin: 0 auto 15px;
-    overflow: hidden;
-}
+.btn-login:hover { opacity: 0.9; transform: translateY(-2px); }
 
-.progress {
-    width: 0%;
-    height: 100%;
-    background: #3b82f6;
-    animation: load 2s forwards;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes load {
-    to { width: 100%; }
-}
-
-/* Class to hide splash */
-.fade-out {
-    opacity: 0;
-    visibility: hidden;
-}
+/* Table Styles for Admin/History */
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.8rem; }
+.admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #333; text-align: left; }
+.stat-badge { background: var(--primary); color: #000; padding: 2px 6px; border-radius: 4px; }
