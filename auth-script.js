@@ -85,3 +85,84 @@ setInterval(() => {
         location.reload();
     }
 }, 10000);
+// --- FACILITATOR CORE LOGIC ---
+
+function renderAuditTable() {
+    const tbody = document.getElementById('adminData');
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    
+    let studentCount = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('history_')) {
+            const regNo = key.replace('history_', '');
+            const history = JSON.parse(localStorage.getItem(key));
+            const lastEntry = history[0];
+            
+            tbody.innerHTML += `
+                <tr style="border-bottom: 1px solid #333;">
+                    <td style="padding: 10px;"><strong>${regNo}</strong></td>
+                    <td style="padding: 10px;"><span class="stat-badge">${history.length}</span></td>
+                    <td style="padding: 10px;">${lastEntry.date} <br><small style="color:#888">${lastEntry.device}</small></td>
+                </tr>`;
+            studentCount++;
+        }
+    }
+    if(studentCount === 0) tbody.innerHTML = "<tr><td colspan='3' style='text-align:center; padding:20px;'>No active logs found.</td></tr>";
+}
+
+function filterStudents() {
+    const filter = document.getElementById('studentSearch').value.toUpperCase();
+    const rows = document.getElementById('adminData').getElementsByTagName('tr');
+    for (let row of rows) {
+        const text = row.getElementsByTagName('td')[0]?.textContent || "";
+        row.style.display = text.toUpperCase().includes(filter) ? "" : "none";
+    }
+}
+
+function updateAnalytics() {
+    const stats = { CS: 0, ENG: 0, TOTAL: 0 };
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('history_')) {
+            const count = JSON.parse(localStorage.getItem(key)).length;
+            stats.TOTAL += count;
+            if (key.includes('/CS/')) stats.CS += count;
+            else if (key.includes('/ENG/')) stats.ENG += count;
+        }
+    }
+    
+    if (stats.TOTAL > 0) {
+        const csPer = Math.round((stats.CS / stats.TOTAL) * 100);
+        const engPer = Math.round((stats.ENG / stats.TOTAL) * 100);
+        document.getElementById('barCS').style.width = csPer + "%";
+        document.getElementById('valCS').innerText = csPer + "%";
+        document.getElementById('barENG').style.width = engPer + "%";
+        document.getElementById('valENG').innerText = engPer + "%";
+    }
+}
+
+function exportToCSV() {
+    let csv = "Reg Number,Login Count,Last Activity\n";
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('history_')) {
+            const data = JSON.parse(localStorage.getItem(key));
+            csv += `${key.replace('history_', '')},${data.length},${data[0].date.replace(',','')}\n`;
+        }
+    }
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "goCBT_Audit_Report.csv";
+    a.click();
+}
+
+function clearSystemData() {
+    if (confirm("CRITICAL: This will wipe all student logs and security locks. Proceed?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
