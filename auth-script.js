@@ -12,14 +12,27 @@ const studentDB = [
     { regNo: "2024/LAW/010", pin: "1010", name: "Ibrahim Bello", course: "Common Law" }
 ];
 // Facilitator Database
-const facilitatorDB = [
-    { id: "FAC-ADMIN", pin: "9999", name: "Dr. Smith", role: "Chief Examiner" }
-];
+// Facilitator Credentials
+const FAC_CREDENTIALS = { id: "FAC-ADMIN", pin: "9999" };
 
-function handleLogin() {
-    const id = document.getElementById('userID').value.trim();
-    const pin = document.getElementById('userPass').value.trim();
-    const isStudent = document.getElementById('studentRole').checked;
+function handleFacilitatorAuth(id, pin) {
+    if (id === FAC_CREDENTIALS.id && pin === FAC_CREDENTIALS.pin) {
+        // Create an Admin Session
+        const adminSession = {
+            user: "Administrator",
+            role: "Facilitator",
+            loginTime: new Date().toLocaleString()
+        };
+        
+        localStorage.setItem('facSession', JSON.stringify(adminSession));
+        
+        // Update UI
+        document.getElementById('facNameDisplay').innerText = `Logged in as: ${adminSession.user}`;
+        showAdminPanel(); // Renders the student list
+    } else {
+        trackFailure(id);
+    }
+}
     
     // 1. Security Check (Lockout)
     const lock = localStorage.getItem(`lock_${id}`);
