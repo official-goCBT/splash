@@ -3,69 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>goCBT | Secure Portal</title>
+    <title>Login | goCBT Portal</title>
     <link rel="stylesheet" href="auth-style.css">
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00d4ff">
 </head>
-    <div id="installBanner" class="hidden" style="background: var(--primary); color: #000; padding: 10px; text-align: center; position: fixed; top: 0; width: 100%; z-index: 100; font-weight: bold;">
-    Get the full experience: 
-    <button onclick="installApp()" style="margin-left:10px; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; background: #000; color: #fff;">Install goAPP</button>
-</div>
 <body>
-
-<div id="splash-screen">
-    <div class="splash-content">
-        <div class="splash-logo">goCBT</div>
-        <div class="loader-bar">
-            <div class="progress"></div>
-        </div>
-        <p>Loading Secure Portal...</p>
-    </div>
-</div>
-<div class="container">
-    <div id="authCard" class="auth-card">
+<div class="auth-wrapper">
+    <div class="auth-card" id="mainCard">
         <div class="logo">goCBT</div>
-        <h2 id="formTitle">Student Portal</h2>
-
-        <div class="role-toggle">
-            <input type="radio" name="role" id="stuTab" checked onclick="switchForm('student')">
-            <label for="stuTab">Student</label>
-            
-            <input type="radio" name="role" id="facTab" onclick="switchForm('facilitator')">
-            <label for="facTab">Facilitator</label>
-            
-            <div id="slider" class="toggle-slider"></div>
-        </div>
-
-        <form id="mainForm" onsubmit="event.preventDefault(); handleLogin();">
+        <h2 id="viewTitle">Student Login</h2>
+        
+        <div id="loginArea">
             <div class="input-group">
                 <label id="idLabel">Registration Number</label>
-                <input type="text" id="userID" placeholder="e.g., 2024/CS/001" required>
+                <input type="text" id="userID" placeholder="2024/CS/001">
             </div>
-
             <div class="input-group">
-                <label id="passLabel">Access PIN</label>
-                <input type="password" id="userPass" placeholder="••••" required>
+                <label>Access PIN</label>
+                <input type="password" id="userPass" placeholder="••••">
             </div>
+            <button class="btn-login" onclick="handleLogin()">Sign In</button>
+            <p style="font-size: 0.7rem; margin-top: 10px; color: #888;">
+                Switch to <a href="#" onclick="toggleRole()" style="color:var(--primary)">Facilitator</a>
+            </p>
+        </div>
 
-            <button type="submit" class="btn btn-primary" id="submitBtn">Sign In to Portal</button>
-        </form>
-
-        <div class="auth-footer" id="authFooter">
-            <p>New here? <a href="#" class="link-btn">Join Students</a></p>
+        <div id="adminView" style="display:none;">
+            <table class="admin-table">
+                <thead><tr><th>Student</th><th>Logins</th><th>Last Seen</th></tr></thead>
+                <tbody id="adminData"></tbody>
+            </table>
+            <button class="btn-login" style="margin-top:15px; background:#ff4d4d" onclick="clearSystemData()">Reset All Data</button>
+            <button class="btn-login" style="margin-top:10px" onclick="location.reload()">Logout</button>
         </div>
     </div>
-
-    <div id="adminView" class="auth-card admin-card hidden">
-        <div class="admin-header">
-            <div class="logo" style="font-size: 1.5rem;">goCBT Admin</div>
-            <button class="btn btn-danger" onclick="logout()">Logout</button>
-        </div>
-        <h3 id="adminWelcome">Dashboard</h3>
-        </div>
 </div>
-
-<script src="script.js"></script>
+<script src="auth-script.js"></script>
 </body>
 </html>
