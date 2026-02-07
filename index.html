@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | goCBT Portal</title>
+    <link rel="stylesheet" href="auth-style.css">
+</head>
+<body>
+<div class="auth-wrapper">
+    <div class="auth-card" id="mainCard">
+        <div class="logo">goCBT</div>
+        <h2 id="viewTitle">Student Login</h2>
+        
+        <div id="loginArea">
+            <div class="input-group">
+                <label id="idLabel">Registration Number</label>
+                <input type="text" id="userID" placeholder="2024/CS/001">
+            </div>
+            <div class="input-group">
+                <label>Access PIN</label>
+                <input type="password" id="userPass" placeholder="••••">
+            </div>
+            <button class="btn-login" onclick="handleLogin()">Sign In</button>
+            <p style="font-size: 0.7rem; margin-top: 10px; color: #888;">
+                Switch to <a href="#" onclick="toggleRole()" style="color:var(--primary)">Facilitator</a>
+            </p>
+        </div>
+
+        <div id="adminView" style="display:none;">
+            <table class="admin-table">
+                <thead><tr><th>Student</th><th>Logins</th><th>Last Seen</th></tr></thead>
+                <tbody id="adminData"></tbody>
+            </table>
+            <button class="btn-login" style="margin-top:15px; background:#ff4d4d" onclick="clearSystemData()">Reset All Data</button>
+            <button class="btn-login" style="margin-top:10px" onclick="location.reload()">Logout</button>
+        </div>
+    </div>
+</div>
+<script src="auth-script.js"></script>
+</body>
+</html>
