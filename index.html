@@ -3,40 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | goCBT Portal</title>
-    <link rel="stylesheet" href="auth-style.css">
+    <title>goCBT | Integrated Portal</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="auth-wrapper">
-    <div class="auth-card" id="mainCard">
+
+<div class="container">
+    <div id="loginView" class="auth-card">
         <div class="logo">goCBT</div>
-        <h2 id="viewTitle">Student Login</h2>
-        
-        <div id="loginArea">
-            <div class="input-group">
-                <label id="idLabel">Registration Number</label>
-                <input type="text" id="userID" placeholder="2024/CS/001">
-            </div>
-            <div class="input-group">
-                <label>Access PIN</label>
-                <input type="password" id="userPass" placeholder="••••">
-            </div>
-            <button class="btn-login" onclick="handleLogin()">Sign In</button>
-            <p style="font-size: 0.7rem; margin-top: 10px; color: #888;">
-                Switch to <a href="https://official-gocbt.github.io/splash/facilitator.html" onclick="toggleRole()" style="color:var(--primary)">Facilitator</a>
-            </p>
+        <h2 id="loginHeader">Student Portal</h2>
+
+        <div class="role-toggle">
+            <input type="radio" name="role" id="stuRole" checked onclick="updateUI('student')">
+            <label for="stuRole">Student</label>
+            <input type="radio" name="role" id="facRole" onclick="updateUI('facilitator')">
+            <label for="facRole">Facilitator</label>
+            <div class="toggle-slider"></div>
         </div>
 
-        <div id="adminView" style="display:none;">
-            <table class="admin-table">
-                <thead><tr><th>Student</th><th>Logins</th><th>Last Seen</th></tr></thead>
-                <tbody id="adminData"></tbody>
+        <div class="input-group">
+            <label id="userLabel">Registration Number</label>
+            <input type="text" id="userID" placeholder="2024/CS/001">
+        </div>
+        <div class="input-group">
+            <label>Access PIN / Password</label>
+            <input type="password" id="userPass" placeholder="••••">
+        </div>
+        <button class="btn btn-primary" onclick="handleLogin()">Sign In to Portal</button>
+    </div>
+
+    <div id="adminView" class="auth-card admin-card hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo" style="font-size: 1.5rem;">goCBT Admin</div>
+            <button class="btn btn-danger" style="width: auto; padding: 8px 15px;" onclick="logout()">Logout</button>
+        </div>
+        <h3 id="adminWelcome" style="text-align: left; margin: 10px 0;">Welcome, Facilitator</h3>
+
+        <div class="stats-grid">
+            <div class="stat-item"><span>Total Student Logins</span><div id="totalLogs">0</div></div>
+            <div class="stat-item"><span>Active Users (Today)</span><div id="activeUsers">0</div></div>
+            <div class="stat-item" style="border-left-color: var(--secondary);"><span>System Status</span><div style="color: var(--secondary); font-size: 1rem;">SECURE</div></div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="searchBar" onkeyup="searchTable()" placeholder="🔍 Search student by name or Reg No...">
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Details</th>
+                        <th>Reg Number</th>
+                        <th>Logins</th>
+                        <th>Last Activity</th>
+                    </tr>
+                </thead>
+                <tbody id="auditBody"></tbody>
             </table>
-            <button class="btn-login" style="margin-top:15px; background:#ff4d4d" onclick="clearSystemData()">Reset All Data</button>
-            <button class="btn-login" style="margin-top:10px" onclick="location.reload()">Logout</button>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button class="btn btn-secondary" onclick="exportCSV()">Download CSV Report</button>
+            <button class="btn btn-danger" onclick="resetSystem()" style="background: #444;">Wipe System Logs</button>
         </div>
     </div>
 </div>
-<script src="auth-script.js"></script>
+
+<script src="script.js"></script>
 </body>
 </html>
