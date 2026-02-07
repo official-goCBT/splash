@@ -11,52 +11,7 @@ const studentDB = [
     { regNo: "2024/SOC/009", pin: "9999", name: "Sarah Williams", course: "Political Science" },
     { regNo: "2024/LAW/010", pin: "1010", name: "Ibrahim Bello", course: "Common Law" }
 ];
-// Facilitator Database
-// Facilitator Credentials
-const FAC_CREDENTIALS = { id: "FAC-ADMIN", pin: "9999" };
-
-function handleFacilitatorAuth(id, pin) {
-    if (id === FAC_CREDENTIALS.id && pin === FAC_CREDENTIALS.pin) {
-        // Create an Admin Session
-        const adminSession = {
-            user: "Administrator",
-            role: "Facilitator",
-            loginTime: new Date().toLocaleString()
-        };
-        
-        localStorage.setItem('facSession', JSON.stringify(adminSession));
-        
-        // Update UI
-        document.getElementById('facNameDisplay').innerText = `Logged in as: ${adminSession.user}`;
-        showAdminPanel(); // Renders the student list
-    } else {
-        trackFailure(id);
-    }
-}
-    
-    // 1. Security Check (Lockout)
-    const lock = localStorage.getItem(`lock_${id}`);
-    if (lock && new Date().getTime() < parseInt(lock) + 300000) {
-        return alert("Security Lock: This ID is temporarily disabled.");
-    }
-
-    if (!isStudent) {
-        // 2. Facilitator Auth Flow
-        const fac = facilitatorDB.find(f => f.id === id && f.pin === pin);
-        if (fac) {
-            localStorage.setItem('facSession', JSON.stringify({
-                ...fac,
-                loginTime: new Date().getTime()
-            }));
-            alert(`Welcome, ${fac.name}. Accessing Admin Panel...`);
-            showAdminPanel(); // Or redirect to facilitator.html
-        } else {
-            trackFailure(id);
-        }
-    } else {
-        // ... Existing Student Logic (as provided in previous step)
-    }
-}
+const FAC_ID = "FAC-ADMIN", FAC_PIN = "9999";
 
 // 2. LOGIN LOGIC
 function handleLogin() {
