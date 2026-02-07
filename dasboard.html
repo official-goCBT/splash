@@ -1,27 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | goCBT Portal</title>
+    <link rel="stylesheet" href="auth-style.css"> <style>
+        /* Specific Dashboard overrides */
+        .profile-info { text-align: left; margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+        .info-row { margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        .info-row span { color: #aaa; font-size: 0.8rem; display: block; }
+        .info-row strong { color: #fff; font-size: 1.1rem; }
+        .btn-logout { background: #ff4d4d; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn-logout:hover { background: #cc0000; }
+    </style>
+</head>
 <body>
-    <h1>Student Dashboard</h1>
-    <div id="welcomeMessage"></div>
-    <button onclick="logout()">Logout</button>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">goCBT</div>
+                <h1 id="welcomeTitle">Student Dashboard</h1>
+                <p>Academic Session 2025/2026</p>
+            </div>
+
+            <div class="profile-info" id="studentDetails">
+                <div class="info-row"><span>Full Name</span><strong id="dispName">---</strong></div>
+                <div class="info-row"><span>Reg Number</span><strong id="dispReg">---</strong></div>
+                <div class="info-row"><span>Department</span><strong id="dispDept">---</strong></div>
+            </div>
+
+            <button class="btn-logout" onclick="logout()">Logout & Exit</button>
+        </div>
+    </div>
 
     <script>
-        // Retrieve the data stored during login
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-
-        if (!user) {
-            window.location.href = "login.html"; // Kick back to login if no data
-        } else {
-            document.getElementById('welcomeMessage').innerHTML = `
-                <p><strong>Name:</strong> ${user.name}</p>
-                <p><strong>Reg No:</strong> ${user.regNo}</p>
-                <p><strong>Course:</strong> ${user.course}</p>
-            `;
+        // Check if user is logged in
+        window.onload = function() {
+            const userData = localStorage.getItem('currentUser');
+            
+            if (!userData) {
+                // If no data found, redirect back to login
+                alert("Unauthorized access. Please login.");
+                window.location.href = "index.html";
+            } else {
+                const student = JSON.parse(userData);
+                document.getElementById('dispName').innerText = student.name;
+                document.getElementById('dispReg').innerText = student.regNo;
+                document.getElementById('dispDept').innerText = student.course;
+                document.getElementById('welcomeTitle').innerText = `Welcome, ${student.name.split(' ')[0]}`;
+            }
         }
 
         function logout() {
-            localStorage.clear(); // Wipe the "memory"
-            window.location.href = "login.html";
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = "index.html"; // Path to your login file
         }
     </script>
 </body>
