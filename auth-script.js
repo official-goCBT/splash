@@ -15,8 +15,39 @@ const FAC_ID = "FAC-ADMIN", FAC_PIN = "9999";
 
 // 2. LOGIN LOGIC
 function handleLogin() {
-    const id = document.getElementById('userID').value;
-    const pin = document.getElementById('userPass').value;
+    const id = document.getElementById('userID').value.trim();
+    const pin = document.getElementById('userPass').value.trim();
+    const isStudent = document.getElementById('studentRole').checked;
+
+    if (isStudent) {
+        const student = studentDB.find(s => s.regNo === id && s.pin === pin);
+        if (student) {
+            saveSession(student, "student");
+            window.location.href = "https://official-gocbt.github.io/Home/";
+        } else {
+            alert("Invalid Student Credentials");
+        }
+    } else {
+        // Facilitator Login
+        const fac = facilitatorDB.find(f => f.id === id && f.pin === pin);
+        if (fac) {
+            saveSession(fac, "facilitator");
+            window.location.href = "facilitator-dashboard.html";
+        } else {
+            alert("Invalid Facilitator Credentials");
+        }
+    }
+}
+
+function saveSession(user, role) {
+    const session = {
+        ...user,
+        role: role,
+        loginTime: new Date().getTime(),
+        lastSeen: new Date().toLocaleString()
+    };
+    localStorage.setItem('currentUser', JSON.stringify(session));
+}
     
     // Check Lockout
     const lock = localStorage.getItem(`lock_${id}`);
@@ -166,3 +197,15 @@ function clearSystemData() {
         location.reload();
     }
 }
+const facilitatorDB = [
+    { id: "admin@gocbt.com", pin: "admin123", name: "Dr. Adeyemi", role: "Chief Examiner" },
+    { id: "exams@gocbt.com", pin: "exam456", name: "Mrs. Okon", role: "Exam Officer" },
+    { id: "cs_dept@gocbt.com", pin: "cs789", name: "Prof. Ibrahim", role: "HOD Computer Science" },
+    { id: "eng_dept@gocbt.com", pin: "eng101", name: "Engr. Bello", role: "HOD Engineering" },
+    { id: "law_dept@gocbt.com", pin: "law202", name: "Barr. Chidi", role: "HOD Law" },
+    { id: "staff01@gocbt.com", pin: "staff1", name: "Mr. Samuel", role: "Invigilator" },
+    { id: "staff02@gocbt.com", pin: "staff2", name: "Miss Sarah", role: "Invigilator" },
+    { id: "staff03@gocbt.com", pin: "staff3", name: "Mr. Victor", role: "Registrar" },
+    { id: "staff04@gocbt.com", pin: "staff4", name: "Mrs. Grace", role: "Admin Secretary" },
+    { id: "staff05@gocbt.com", pin: "staff5", name: "Dr. Yusuf", role: "Dean of Students" }
+];
