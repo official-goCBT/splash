@@ -42,6 +42,17 @@ function handleLogin() {
         alert("Facilitator login not yet configured in local CMS.");
     }
 }
+// Add this to your GitHub Home page script
+window.onload = function() {
+    const data = localStorage.getItem('currentUser');
+    if (data) {
+        const user = JSON.parse(data);
+        console.log(`User ${user.name} logged in at ${user.lastLogin}`);
+        
+        // Example: If you have an element with id "status-bar"
+        // document.getElementById('status-bar').innerText = `Welcome, ${user.name}. Last login: ${user.lastLogin}`;
+    }
+};
 
 // 3. Persistence Logic: Check if user is already logged in on page load
 window.onload = function() {
